@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    .gmap_canvas {
+        overflow:hidden;background:none!important;
+    }
+    .mapouter{
+        position:relative;text-align:right;
+    }
+    </style>
+    <link rel="stylesheet" href="weathrFroecast.css">
+</head>
+<body>
+    <div id="first">
+        <div>
+            <input type="text" id="weth">
+            <button id="srch" onclick="getWeather()">Search</button>
+        </div>
+        <div>
+            <img id="nav" src="data:image/jpeg;base64,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" alt="">
+            <button id="qs">Different Weather?</button>
+            <div>
+                <button>Metric: °C, m/s</button>
+                <button>Imperial: °F, mph</button>
+            </div>
+        </div>
+    </div>
+    <div id="display">
+        <div>
+            <div>
+                <p id="date"></p><p id="time"></p>
+            </div>
+            <h1 id="place"></h1>
+            <div>
+                <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxAHEBIRBw8VEBIWFxYREBcVDxAODxARFRIWFxUVGRcYHSggGB0lGxMTJTEhJTUrLi4uFx8zODMtNygtLisBCgoKBQUFDgUFDisZExkrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrK//AABEIAOEA4QMBIgACEQEDEQH/xAAbAAEAAwEBAQEAAAAAAAAAAAAAAwQFAgEGB//EADQQAQABAgQBCgQFBQAAAAAAAAABAgMEESExEgUUMkFRUmFxodETIoGRQmJyscEzkqLw8f/EABQBAQAAAAAAAAAAAAAAAAAAAAD/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwD9xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFXEY6m1pT80+G33U6uUa56MRH0mQawyaeUa43yn6LVjlCm5pX8s+n3BcAAAAAAAAAAAAAAAAAAAAAABBiMXTY6Ws9kbgnZ3KGLy+S1P6p/hxXylVPQpiPvMqUznuDwd27c3ZytxnKecNTb/AK9yInsiOKQRWLFV/o7RvM7Qln4NrtuT/bSlrrtV0xRRXNMR+WdZ7ZQV4SYjO1MVx4b/AGBYt8oxRGUUZR+rP91uxiqL/RnXsnSWIROWwPohVwGJ+PGVfSjfxjtWgAAAAAAAAAAAAAAAABXxOLpsaTrPZClVylXPRiI+8guY7EfAp+XpTt4eLHmc93d+9N+c6/LwRZ9gPXdm3N6qKaev0R5rWHq+Hbrqjefkjw7Qe378W44MNpHXPXVPmqvInM4geurdybU525ylzm84gW73DiKeOjSqOnHb+aFV7auzanOifb/dFiMVRd0xFEedOkx7grLFjGV2evOOydf+OcRZ+FlNE8VM7T7oQb9m7F6Imjb9nbFwmKnDZ6ZxPjllK7a5Rpr0uRw+sAuhE57AAAAAAAAAAACDGX/gU5xvtHmnZvK060x5yChM8WtWsvAAnVxk7T4O3FyuOLaPmnygHtGHi3TxYjr1pp65RXb83Y4YpimI1iIh7fuzeqmqfp4R1QjBxk9ydAOIiXtUdjoBzMGToBLhKteGvo1aT4T1S75lX+CaavKrVXI02B1XRNE5VxlLlbs3vj/JiNe7V1xKtcom3MxVvGgL/Jd6Zzoq84/mGiyOS4zr8olrgAAAAAAAAAAM/la3nFNUdWk/VoOblEXImKtpB8+J8ThqsPOusdUoAFrB7XMt+CVVPg7kWq44tp0nykEAkxFqbNUxP08Y6kYAAAAAAAAC3i6JvTRNEZzVTEzl2qtFM1zEU7zpDfop4IiI6oiPsCHBYbm8a7zv7LAAAAAAAAAAAAAATGe6CrB26t6Y+mcfsnAVuY2+7/lV7nMbfd9avdZAQXsLTdpimeraeuGfc5Prp6GVUeeU+rXAYvMrnc9Y93nM7nc9YbYDE5nc7k/eDmdzuT6NsBic0udyfQ5pc7k+jbAYfNLncl1TgrlX4cvPKG0Aq4TBxY1q1q9I8loAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAf/2Q==" alt="">
+                <h1><span id="temp"></span>°C</h1>
+            </div>
+            <p id="feel">Feels like <span id="like"></span>°C. <span id="likeFst"></span>.<span id="likeSnd"></span></p>
+            <div>
+                <div></div>
+                <div>
+                    <p><span id="a"></span> m/s</p>
+                    <p>Humidity: <span id="b"></span>%</p>
+                    <p>Dew point: <span id="c"></span>°C</p>
+                </div>
+                <div>
+                    <p><span id="d"></span>hPa</p>
+                    <p>UV: <span id="e"></span></p>
+                    <p>Visibility: <span id="f"></span>km</p>
+                </div>
+            </div>
+        </div>
+        <div id="map">
+            <div class="mapouter"><div class="gmap_canvas"><iframe width="600" height="500" id="gmap_canvas"  frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe><a href="https://fmovies-online.net"></a><br><a href="https://www.embedgooglemap.net">embedgooglemap.net</a></div></div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+    let city;
+    let data;
+    async function getWeather(){
+        try{
+
+            city= document.getElementById("weth").value;
+            let res= await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=e4c70ce6a6821649a416cb9521d5f4f8&units=metric`);
+            data= await res.json();
+            console.log(data);
+            appending(data);
+
+        } catch (err){
+
+            console.log(err);
+
+        }
+    }
+    function appending(data){
+        // document.querySelector("#display").innerText="";
+        let p1=document.querySelector("#temp");
+        p1.innerText=data.main.temp;
+
+        let p2=document.querySelector("#place");
+        p2.innerText=data.name;
+        
+        document.querySelector("#like").innerText=data.main.feels_like;
+        document.querySelector("#likeFst").innerText=data.weather[0].main;
+        document.querySelector("#likeSnd").innerText=data.weather[0].description;
+
+        document.querySelector("#a").innerText=data.wind.speed;
+        document.querySelector("#b").innerText=data.main.humidity;
+        document.querySelector("#c").innerText="";
+        document.querySelector("#d").innerText=data.main.pressure;
+        document.querySelector("#e").innerText="";
+        document.querySelector("#f").innerText=data.visibility;
+        
+
+        let x=document.querySelector("#gmap_canvas");
+        x.setAttribute("src",`https://maps.google.com/maps?q=${city}&t=&z=13&ie=UTF8&iwloc=&output=embed`);
+    }
+
+    let d= new Date();
+    let month=["Jan","Feb","March","April","Aug","Sep","Oct","Nov","Dec"];
+    let date= month[d.getMonth()]+" "+d.getDay()+", ";
+    let t=d.getHours()+":"+d.getMinutes();
+    document.querySelector("#date").innerText=date;
+    document.querySelector("#time").innerText=t;
+</script>
